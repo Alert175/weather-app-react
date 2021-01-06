@@ -6,8 +6,6 @@ import SendButton from "./components/SendButton.jsx";
 import MessageContainer from "./components/MessageContainer.jsx";
 import WeatherData from "./components/WeatherData.jsx";
 
-import './App.scss'
-
 class App extends React.Component{
   constructor(props){
     super(props)
@@ -58,7 +56,7 @@ class App extends React.Component{
   }
   render(){
     return(
-      <div className="wrapper">
+      <div>
         {
           this.state.errorStatus
           ? <MessageContainer message={this.state.errorMessage} changeShowMessage={()=>this.changeErrorStatus()}/>
