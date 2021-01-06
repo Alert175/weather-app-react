@@ -1,25 +1,80 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import React from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import InputForm from "./components/InputForm.jsx";
+import SendButton from "./components/SendButton.jsx";
+import MessageContainer from "./components/MessageContainer.jsx";
+import WeatherData from "./components/WeatherData.jsx";
+
+class App extends React.Component{
+  constructor(props){
+    super(props)
+    this.state={
+      apiKey: 'e060f8b95fe224512f7a8d5aaeecb617',
+      locationName: '',
+      errorStatus: false,
+      errorMessage: '',
+      statusSuccessFetch: false,
+      weatherData: {}
+    }
+  }
+  setLocationName(value){
+    this.setState({
+      locationName: value
+    })
+  }
+  validateInputValue(){
+    if(this.state.locationName){
+      this.callWeatherAPI()
+    } else {
+      this.setState({
+        errorStatus: true,
+        errorMessage: 'Необходимо выбрать город'
+      })
+    }
+  }
+  async callWeatherAPI(){
+    try{
+      const responce = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${this.state.locationName}&lang=ru&appid=${this.state.apiKey}`)
+      this.setState({
+        weatherData: responce.data,
+        statusSuccessFetch: true
+      })
+    }
+    catch(error){
+      this.setState({
+        errorStatus: true,
+        errorMessage: 'Не удалось найти такой город',
+        locationName: ''
+      })
+    }
+  }
+  changeErrorStatus(){
+    this.setState({
+      errorStatus: false
+    })
+  }
+  render(){
+    return(
+      <div>
+        {
+          this.state.errorStatus
+          ? <MessageContainer message={this.state.errorMessage} changeShowMessage={()=>this.changeErrorStatus()}/>
+          : null
+        }
+        <InputForm 
+          inputValue={this.state.locationName}
+          changeInputValue={(value)=>this.setLocationName(value)}
+        />
+        <SendButton clickButton={()=>this.validateInputValue()}/>
+        {
+          this.state.statusSuccessFetch
+          ? <WeatherData data={this.state.weatherData}/>
+          : null
+        }
+      </div>
+    )
+  }
 }
 
 export default App;
