@@ -1,6 +1,33 @@
 .wrapper{
-  background-color: black;
-  .content{
-    background-color: white;
+  width: 90%;
+  margin: 0 auto;
+  transition: .25s;
+  .info{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+    font-size: 18px;
+    img{
+      height: 100px;
+      width: auto;
+    }
+    .text{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-content: flex-end;
+      gap: 10px;
+      width: 100%;
+      text-align: right;
+    }
+    .staticText{
+      width: 70%;
+    }
+    .dynamicText{
+      width: 30%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
   }
 }

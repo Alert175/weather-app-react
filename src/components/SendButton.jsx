@@ -1,4 +1,5 @@
 import React from "react";
+import classes from '../style/SendButton.module.scss'
 
 class SendButton extends React.Component{
   constructor(props){
@@ -6,7 +7,7 @@ class SendButton extends React.Component{
   }
   render(){
     return(
-      <button onClick={()=>this.props.clickButton()}>Отправить</button>
+      <button onClick={()=>this.props.clickButton()}>Узнать погоду</button>
     )
   }
 }

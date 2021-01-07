@@ -6,6 +6,8 @@ import SendButton from "./components/SendButton.jsx";
 import MessageContainer from "./components/MessageContainer.jsx";
 import WeatherData from "./components/WeatherData.jsx";
 
+import classes from './style/App.module.scss'
+
 class App extends React.Component{
   constructor(props){
     super(props)
@@ -25,6 +27,9 @@ class App extends React.Component{
   }
   validateInputValue(){
     if(this.state.locationName){
+      this.setState({
+        locationName: this.state.locationName.replace(/\s+/g, '')
+      })
       this.callWeatherAPI()
     } else {
       this.setState({
@@ -38,7 +43,8 @@ class App extends React.Component{
       const responce = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${this.state.locationName}&lang=ru&appid=${this.state.apiKey}`)
       this.setState({
         weatherData: responce.data,
-        statusSuccessFetch: true
+        statusSuccessFetch: true,
+        locationName: ''
       })
     }
     catch(error){
@@ -56,7 +62,8 @@ class App extends React.Component{
   }
   render(){
     return(
-      <div>
+      <div className={classes.wrapper}>
+        <div className={classes.header}>Погода</div>
         {
           this.state.errorStatus
           ? <MessageContainer message={this.state.errorMessage} changeShowMessage={()=>this.changeErrorStatus()}/>
@@ -65,6 +72,7 @@ class App extends React.Component{
         <InputForm 
           inputValue={this.state.locationName}
           changeInputValue={(value)=>this.setLocationName(value)}
+          pressedEnter={()=>this.validateInputValue()}
         />
         <SendButton clickButton={()=>this.validateInputValue()}/>
         {
