@@ -22,14 +22,11 @@ class App extends React.Component{
   }
   setLocationName(value){
     this.setState({
-      locationName: value
+      locationName: value.replace(/\s+/g, '')
     })
   }
   validateInputValue(){
     if(this.state.locationName){
-      this.setState({
-        locationName: this.state.locationName.replace(/\s+/g, '')
-      })
       this.callWeatherAPI()
     } else {
       this.setState({
@@ -40,7 +37,7 @@ class App extends React.Component{
   }
   async callWeatherAPI(){
     try{
-      const responce = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${this.state.locationName}&lang=ru&appid=${this.state.apiKey}`)
+      const responce = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.locationName}&lang=ru&appid=${this.state.apiKey}`)
       this.setState({
         weatherData: responce.data,
         statusSuccessFetch: true,
